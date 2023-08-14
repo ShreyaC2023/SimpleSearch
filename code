@@ -1,0 +1,46 @@
+import random
+
+def list_intersection(lista,listb):
+    listc=[item for item in lista if item not in listb]
+    return listc
+
+def remove_reiteration(trial_list):
+    new_list=[]
+    for i in trial_list:
+        if i not in new_list:
+            new_list.append(i)
+    return new_list
+
+S='S'
+A='A'
+B='B'
+C='C'
+D='D'
+E='E'
+G='G'
+
+nodes={ S:[A,B,C], A:[B,S,E], B:[S,A,D], C:[D,B,G], D:[B,C,E,G], E:[G,D,A] }
+
+OPEN=[S]
+CLOSED=[]
+MOVEGEN=[]
+INTERSECTING_ELEMENTS=[]
+LOOP=True
+while LOOP:
+    n=random.choice(list(OPEN))
+    CLOSED.extend(n)
+    OPEN.remove(n)
+    if n==G:
+        print(f"GOAL NODE FOUND, {G}")
+        LOOP=False
+    else:
+        MOVEGEN.extend(nodes[n])
+        CLOSED=remove_reiteration(CLOSED)
+        INTERSECTING_ELEMENTS.extend(list_intersection(lista=MOVEGEN,listb=CLOSED))
+        OPEN.extend(INTERSECTING_ELEMENTS)
+        OPEN=remove_reiteration(OPEN)
+        OPEN=list_intersection(OPEN,CLOSED)
+        MOVEGEN.clear()
+        print(f"{n}\n")
+        print(f"Open set is {OPEN}\nClosed set is {CLOSED}")
+
